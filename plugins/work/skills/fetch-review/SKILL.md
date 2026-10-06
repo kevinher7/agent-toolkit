@@ -81,7 +81,7 @@ Every verdict names the function, line, or commit you checked. If you can't poin
 
 Put the most important fixes first and "Already fixed" items last. For outdated threads, use `originalLine` and add `· outdated` to the location line.
 
-```markdown
+````markdown
 ## PR #412 · 4 open threads from @tanaka
 
 ### 1. Wrap the job retry in a lock
@@ -91,6 +91,18 @@ Two workers can pick up the same job and both write the result.
 
 **Still applies.** `claim_job()` reads the row and updates it in two separate queries with no lock, so the race is real. A `SELECT ... FOR UPDATE` in `claim_job()` fixes it.
 
+Before:
+```python
+def claim_job(job_id):
+    row = db.query("SELECT * FROM jobs WHERE id = %s", job_id)
+```
+
+After:
+```python
+def claim_job(job_id):
+    row = db.query("SELECT * FROM jobs WHERE id = %s FOR UPDATE", job_id)
+```
+
 ### 2. Use `parseInt(x, 10)`
 `src/api/routes.ts:34` · @tanaka
 
@@ -98,10 +110,26 @@ The reviewer suggested this exact change.
 
 **Already fixed** in `a1b2c3d`. The thread can be resolved.
 
-### Questions to answer
-- `src/sync/worker.py:40` · @tanaka Why is the timeout 30s?
+Before:
+```ts
+const page = parseInt(req.query.page);
 ```
 
+After:
+```ts
+const page = parseInt(req.query.page, 10);
+```
+
+### Questions to answer
+- `src/sync/worker.py:40` · @tanaka Why is the timeout 30s?
+````
+
 Each item title is the fix, written as an instruction. The line under the location is the reviewer's reason, shortened. Omit "Questions to answer" if there are none.
+
+Each item ends with a "Before:" code block and an "After:" code block, tagged with the file's language. Show the same lines in both so they line up: the changed lines plus a line or two of context.
+
+- **Still applies** and **Partly fixed**: before is the code at `headRefOid`, after is the fix you'd make. For a `suggestion` block, after is the reviewer's suggestion.
+- **Already fixed**: before is the code from `diffHunk`, after is the code at `headRefOid`.
+- **I'd push back** and **Unclear**: show the reviewer's requested change if it's concrete enough to write. Otherwise skip both blocks.
 
 End after the list. Don't offer a fix plan or ask which item to start with.
