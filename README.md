@@ -21,7 +21,7 @@ claude --plugin-dir /absolute/path/to/agent-toolkit/plugins/work
 
 Use `/work:bee-review` or `/work:honeycomb-review` for a combined domain and type
 review, and `/work:rereview` to check previously reported findings. `/work:gh`
-handles PR operations and posting selected findings; `/work:fetch-review` lists
+posts reviews, comments, and selected findings; `/work:fetch-review` lists
 the open fixes from a PR review. Posting requires your selection or request.
 
 Install Bash, Git, `gh`, and `jq`, then authenticate with `gh auth login`.
