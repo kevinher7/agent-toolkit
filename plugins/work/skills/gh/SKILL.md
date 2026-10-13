@@ -1,6 +1,6 @@
 ---
 name: gh
-description: GitHub PR operations. Sub-workflows dispatched from $ARGUMENTS — "create pr" opens a new PR, "update pr" refreshes title/description, "review" posts a code review (with optional inline diff comments), "comment" posts a regular PR comment. Reviews/comments support Japanese/English language auto-detection.
+description: GitHub PR operations. Sub-workflows dispatched from $ARGUMENTS — "review" posts a code review (with optional inline diff comments), "comment" posts a regular PR comment. Reviews/comments support Japanese/English language auto-detection.
 ---
 
 # GitHub PR Skill
@@ -15,21 +15,15 @@ Single entry point for all GitHub PR operations. Dispatch on `$ARGUMENTS`:
 
 | User intent | `$ARGUMENTS` starts with | Where to go |
 |---|---|---|
-| Open a new PR from the current branch | `create pr` | Read `references/create-pr.md` and follow it |
-| Refresh an existing PR's title/description | `update pr` | Read `references/update-pr.md` and follow it |
 | Post a code review (approve / request changes / comment, optionally with inline diff comments) | `review` | "Reviewing" section below |
 | Post a regular PR comment that isn't a review | `comment` | "Commenting" section below |
 | Anything else / ambiguous | (other) | Infer the closest match from intent; if truly unclear, ask the user which capability they want |
 
-After matching, treat any tokens **after** the dispatch keyword as the workflow's own input (e.g., `/work:gh create pr --reviewer alice` → workflow input is `--reviewer alice`).
-
-The `references/` files are loaded only when needed (progressive disclosure) — do not read them unless the user is invoking that specific sub-workflow.
+After matching, treat any tokens **after** the dispatch keyword as the workflow's own input (e.g., `/work:gh review approve` → workflow input is `approve`).
 
 ---
 
 ## Language Detection (reviews & comments only)
-
-This applies to **review and comment text only** — not to PR titles/descriptions written by create-pr / update-pr.
 
 Use the PR author to choose the default review/comment language, unless the user explicitly overrides it. Respect higher-priority instructions.
 
@@ -144,9 +138,6 @@ When posting review findings from a code review:
 ```
 gh/
 ├── SKILL.md              ← this file (entry point + dispatch + reviewing/commenting)
-├── references/           ← progressive-disclosure sub-workflows
-│   ├── create-pr.md
-│   └── update-pr.md
 ├── scripts/              ← bash helpers for reviewing/commenting
 │   ├── post_inline_review.sh
 │   ├── post_review.sh
