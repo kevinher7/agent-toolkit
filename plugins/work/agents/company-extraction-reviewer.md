@@ -21,7 +21,7 @@ Focus on these paths:
 - `src/bee/prompt/` - LLM prompts for company extraction
 
 # Bee Patterns (ENFORCE)
-- Use `xlogging.get_logger(__name__)` not standard logging
+- Use `slogging.get_logger(__name__)` not standard logging
 - Use Pydantic field validators for data validation
 - Use `handle_validation_errors()` for graceful validation failures
 - Prefer `SourcedValue[T]` for fields that track data provenance
@@ -60,7 +60,7 @@ For `employee_numbers` and `sales` fields:
 - CRITICAL: Missing validation for corporate_number format
 - CRITICAL: Not handling None/empty for required fields
 - CRITICAL: Extracting placeholder values (0000000, 1111111 for zip)
-- WARNING: Using standard logging instead of xlogging
+- WARNING: Using standard logging or `xlogging` instead of slogging
 - WARNING: Hardcoded field names instead of model constants
 - WARNING: Not using `handle_validation_errors()` for failures
 - WARNING: Missing year validation for sales/employee data

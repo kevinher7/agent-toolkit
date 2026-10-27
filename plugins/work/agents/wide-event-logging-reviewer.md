@@ -23,7 +23,7 @@ Focus on all Python files, especially:
 # Bee Patterns (ENFORCE)
 
 ## Wide Event Logging Framework
-**Use `slogging` for wide event logging, NOT xlogging**
+**Use `slogging` for all logging.** `xlogging` was removed, and `scripts/check_logging_calls.py` fails on any mention of it.
 ```python
 from bee.framework import slogging
 
@@ -101,7 +101,7 @@ logger.info(
 - **Production**: JSON for log aggregation (CloudWatch, Datadog, etc.)
 
 # Anti-Patterns to Flag
-- CRITICAL: Using `xlogging` where `slogging` should be used for wide events
+- CRITICAL: Using `xlogging` or standard `logging` instead of `slogging`
 - CRITICAL: Multiple small logs instead of single wide event
 - CRITICAL: Missing entity identifier (uuid/id) in context
 - CRITICAL: No final wide event log at end of processing

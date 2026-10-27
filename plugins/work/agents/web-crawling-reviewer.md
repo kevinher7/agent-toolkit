@@ -23,7 +23,7 @@ Focus on these paths:
 - `src/bee/exceptions.py` - CrawlingBlockedError exceptions
 
 # Bee Patterns (ENFORCE)
-- Use `xlogging.get_logger(__name__)` not standard logging
+- Use `slogging.get_logger(__name__)` not standard logging
 - Use `CrawlingBlockedError` for official website blocks (fails job)
 - Use `BrightdataCrawlingBlockedError` for proxy-side failures
 - Log scraping failures to `.scraping_failure_logs/` for analysis
@@ -71,7 +71,7 @@ Tracks per-company proxy usage:
 - CRITICAL: Not closing AsyncWebCrawler properly
 - CRITICAL: Missing timeout configuration
 - WARNING: Auxiliary URL block failing the job (should continue)
-- WARNING: Using standard logging instead of xlogging
+- WARNING: Using standard logging or `xlogging` instead of slogging
 - WARNING: Not logging to scraping_failure_logs
 - WARNING: Hardcoded proxy credentials (should use secrets_manager)
 - WARNING: Missing block detection keyword patterns

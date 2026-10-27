@@ -20,7 +20,7 @@ Focus on these paths:
 - `src/bee/model/facility_model.py` - FacilityModel and FacilityCategory enum
 
 # Bee Patterns (ENFORCE)
-- Use `xlogging.get_logger(__name__)` not standard logging
+- Use `slogging.get_logger(__name__)` not standard logging
 - Use Pydantic validators for category validation
 - All field extraction should handle None/empty gracefully
 - Large files (3,000+ lines) should be logically organized
@@ -69,7 +69,7 @@ Each facility type may have specialized parameters:
 - CRITICAL: Invalid FacilityCategory enum value
 - CRITICAL: Mixing domain-specific params between facility types
 - CRITICAL: Not validating category before enrichment
-- WARNING: Using standard logging instead of xlogging
+- WARNING: Using standard logging or `xlogging` instead of slogging
 - WARNING: Missing operator info extraction for institutions
 - WARNING: Not handling facility-specific parameter requirements
 - WARNING: Large functions (>100 lines) without clear separation

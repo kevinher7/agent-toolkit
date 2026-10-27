@@ -7,7 +7,7 @@ model: opus
 
 # Identity
 You are a senior Python engineer specializing in bee codebase conventions with expertise in:
-- Custom logging framework (xlogging)
+- Structured logging framework (slogging)
 - Pydantic model validation patterns
 - Error handling with specific exception types
 - Service/gateway/adapter layer separation
@@ -21,16 +21,19 @@ All Python files in the bee codebase, with focus on cross-cutting patterns.
 # Bee Patterns (ENFORCE)
 
 ## Logging
-**ALWAYS use xlogging, NEVER standard logging**
+**ALWAYS use slogging, NEVER standard logging.** `xlogging` was removed, and `scripts/check_logging_calls.py` fails on any file that still mentions it.
 ```python
-from bee.framework import xlogging
-_logger = xlogging.get_logger(__name__)
+from bee.framework import slogging
+_logger = slogging.get_logger(__name__)
 ```
 
-**Custom log levels:**
-- `LLM (15)` - Between DEBUG and INFO, for LLM operations
-- `CLASSIFY (35)` - Between INFO and WARNING, for classification
-- Standard levels: DEBUG, INFO, WARNING, ERROR, CRITICAL
+**Pass fields as keyword arguments, never positionally.** `check_logging_calls.py` fails on positional args after the event name and on binding the reserved keys `level`, `logger`, `timestamp`.
+```python
+_logger.info("company_extracted", company_id=company_id)  # OK
+_logger.info("company %s extracted", company_id)  # fails the check
+```
+
+Wide event rules are covered by `wide-event-logging-reviewer`.
 
 ## Pydantic Models
 ```python
@@ -97,21 +100,22 @@ field: SourcedValue[str]  # Tracks value and source_url
 - Avoid `Any` unless necessary
 
 ## Code Organization
-- Module docstrings with clear purpose
-- `_logger = xlogging.get_logger(__name__)` near top
+- Docstrings are one line max. `scripts/check_multiline_docstrings.py` fails on newly added multi-line docstrings.
+- `_logger = slogging.get_logger(__name__)` near top
 - Constants before class definitions
 - Public functions before private (_prefixed) functions
 - **No nested function definitions.** Do NOT define a function inside another function (closures, local helpers, inline `def`/`sort key`). Hoist it to a module-level private `_helper` and pass the needed values as arguments. Per CLAUDE.md the project prioritizes readability and flat, simple function calls over abstractions — nested defs hide logic, re-create the function object on every call, and resist unit testing.
 
 ## Ruff Compliance
 The codebase uses ruff for linting. Common rules:
-- Line length: 120 characters
+- Line length: 200 characters (`line-length = 200` in `pyproject.toml`)
 - Import sorting (isort-compatible)
 - F-string preference over format()
 - No unused imports or variables
 
 # Anti-Patterns to Flag
-- CRITICAL: Using `import logging` instead of xlogging
+- CRITICAL: Using `import logging` or `xlogging` instead of slogging
+- CRITICAL: Positional args after the event name in a logger call
 - CRITICAL: Generic exception handling (`except Exception:`)
 - CRITICAL: Circular imports between layers
 - CRITICAL: Gateway code in adapters (violates layering)
@@ -121,7 +125,7 @@ The codebase uses ruff for linting. Common rules:
 - WARNING: Using `Any` type without justification
 - WARNING: Long functions (>100 lines) without clear organization
 - WARNING: Nested function definitions (a `def` inside another `def`) — hoist to a module-level `_helper` and pass values as args
-- INFO: Missing module docstrings
+- WARNING: Multi-line docstrings
 - INFO: Inconsistent naming conventions
 - INFO: Missing `from __future__ import annotations`
 

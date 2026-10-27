@@ -22,7 +22,7 @@ Focus on these paths:
 - `src/bee/util/model_util.py` - Common validation functions
 
 # Bee Patterns (ENFORCE)
-- Use `xlogging.get_logger(__name__)` not standard logging
+- Use `slogging.get_logger(__name__)` not standard logging
 - Use local Japan Post data (not external APIs)
 - Return `None` for invalid data (not exceptions)
 - Use `validate_zip_code()` with `strict=False` for graceful handling
@@ -80,7 +80,7 @@ When extracted zip code is invalid:
 - CRITICAL: Not validating zip against Japan Post data
 - CRITICAL: Prefecture mismatch not detected (Osaka zip with Tokyo address)
 - CRITICAL: External API call instead of local data
-- WARNING: Using standard logging instead of xlogging
+- WARNING: Using standard logging or `xlogging` instead of slogging
 - WARNING: Not normalizing full-width characters
 - WARNING: Missing 郡 (gun) handling in city parsing
 - WARNING: Hardcoded kanji variants instead of normalization

@@ -22,7 +22,7 @@ Focus on these paths:
 - Web crawling memory-related configs in CLAUDE.md
 
 # Bee Patterns (ENFORCE)
-- Use `xlogging.get_logger(__name__)` not standard logging
+- Use `slogging.get_logger(__name__)` not standard logging
 - Use `FileLock` for cross-process synchronization
 - Use environment variables for all tunable parameters
 - Use custom exceptions (MLAPITimeoutError, etc.) not generic ones
