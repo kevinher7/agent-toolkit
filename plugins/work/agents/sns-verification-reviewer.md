@@ -26,7 +26,7 @@ Focus on these paths:
 - `src/dagster/assets/aggregate_sns_results.py` - SNS result aggregation
 
 # Bee Patterns (ENFORCE)
-- Use `xlogging.get_logger(__name__)` not standard logging
+- Use `slogging.get_logger(__name__)` not standard logging
 - Use `compare_company_names_with_corporate_type()` for name matching
 - Use `compare_addresses()` for address matching
 - Handle `ComparisonResult.REQUIRES_LLM` appropriately per platform

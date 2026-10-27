@@ -22,7 +22,7 @@ Focus on these paths:
 - `src/bee/prompt/` - LLM prompts for SP extraction
 
 # Bee Patterns (ENFORCE)
-- Use `xlogging.get_logger(__name__)` not standard logging
+- Use `slogging.get_logger(__name__)` not standard logging
 - Use `SourcedValue[T]` for all extracted fields to track data provenance
 - All field extraction should handle None/empty gracefully
 - Use Pydantic validators with `strict=True` for uuid validation
@@ -66,7 +66,7 @@ The `is_person_name_only` flag is crucial:
 - CRITICAL: Missing SourcedValue wrapping for extracted fields
 - CRITICAL: Confusing store and office field semantics
 - CRITICAL: Not setting `is_person_name_only` when appropriate
-- WARNING: Using standard logging instead of xlogging
+- WARNING: Using standard logging or `xlogging` instead of slogging
 - WARNING: Not handling potential closure signals
 - WARNING: Missing keyman title extraction when available
 - WARNING: Not preserving source_url in SourcedValue

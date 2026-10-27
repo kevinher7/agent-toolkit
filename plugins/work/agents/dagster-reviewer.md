@@ -24,7 +24,7 @@ Focus on these paths:
 - `src/dagster/io_managers/` - Run-scoped pickle IO manager
 
 # Bee Patterns (ENFORCE)
-- Use `xlogging.get_logger(__name__)` not standard logging
+- Use `slogging.get_logger(__name__)` not standard logging
 - Register all assets, jobs, sensors in repository.py
 - Use `run_scoped_pickle_io_manager` for inter-asset data
 
@@ -87,7 +87,7 @@ Assets flow through these stages:
 - CRITICAL: Missing failure hook for CrawlingBlockedError
 - CRITICAL: Circular asset dependencies
 - CRITICAL: Not updating cursor in sensor (causes duplicate runs)
-- WARNING: Using standard logging instead of xlogging
+- WARNING: Using standard logging or `xlogging` instead of slogging
 - WARNING: Sensor not respecting backoff state
 - WARNING: Missing `SkipReason` when sensor should skip
 - WARNING: Hardcoded job names instead of using job_name parameter
